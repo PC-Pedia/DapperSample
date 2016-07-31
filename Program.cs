@@ -71,7 +71,7 @@ namespace DapperSample
 		{
 			var foo = new Foo
 			          {
-				          Id = Guid.NewGuid().ToString(),
+				          Id = Guid.NewGuid(),
 				          Name = DateTime.UtcNow.ToString("G")
 			          };
 

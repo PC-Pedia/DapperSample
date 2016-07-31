@@ -29,8 +29,14 @@ namespace DapperSample
 		    _connection.Open();
 		    try
 		    {
-			    var values = _connection.Query<Foo>("SELECT Id, Name FROM Foo");
-			    return values;
+
+				var values = _connection.Query("SELECT Id, Name FROM Foo").Select(x=>new Foo
+				                                                                     {
+					                                                                     Id = new Guid(x.Id),
+																						 Name = x.Name
+				                                                                     });
+				
+				return values;
 		    }
 		    catch (SqliteException ex)
 		    {
