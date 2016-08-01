@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DapperSample.DTOs;
 using DapperSample.Models;
 
 namespace DapperSample
@@ -85,7 +86,17 @@ namespace DapperSample
 
 		private static void GetFooWithRelations()
 		{
-			throw new NotImplementedException();
+			var values = _connection.GetFooDto();
+
+			if (!values.Any())
+				Console.WriteLine("No values");
+
+			foreach (var value in values)
+			{
+				Console.WriteLine($"[{value.FooId}] :: {value.FooName} :: {value.BarName}");
+			}
+
+			Console.WriteLine();
 		}
 
 		private static void Save<T>() where T: IModel, new()
@@ -104,7 +115,18 @@ namespace DapperSample
 
 		private static void SaveFooWithRelation()
 		{
-			throw new NotImplementedException();
+			var value = new FooDto
+			            {
+				            FooId = Guid.NewGuid(),
+				            FooName = $"[F] - {DateTime.UtcNow.ToString("G")}",
+				            BarId = Guid.NewGuid(),
+				            BarName = $"[B] - {DateTime.UtcNow.ToString("G")}"
+			            };
+
+			_connection.SaveFooDto(value);
+
+			Console.WriteLine($"Value saved: [F]:{value.FooId} [B]:{value.BarId}");
+			Console.WriteLine();
 		}
 	}
 }
