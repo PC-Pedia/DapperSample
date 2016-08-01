@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DapperSample
+namespace DapperSample.Models
 {
-    public class Foo
+    public interface IModel
     {
-		public Guid Id { get; set; }
-		public string Name { get; set; }
+		Guid Id { get; set; }
+		string Name { get; set; }
     }
 }

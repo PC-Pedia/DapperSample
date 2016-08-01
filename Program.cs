@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using DapperSample.Models;
 
 namespace DapperSample
 {
@@ -13,7 +11,7 @@ namespace DapperSample
 	    public static void Main(string[] args)
         {
 			_connection = new SQLiteDataProvider("Data Source=Sample.db");
-		    _connection.CrateTable();
+		    _connection.CreateTable();
 
 		    string option = string.Empty;
 		    do
@@ -30,7 +28,13 @@ namespace DapperSample
 	    private static void Menu()
 	    {
 		    Console.WriteLine("1. Get all Foo values");
-		    Console.WriteLine("2. Add new Foo value (random)");
+		    Console.WriteLine("2. Get all Bar value");
+			Console.WriteLine("3. Get all Foo values with Bar relations");
+			Console.WriteLine("4. Add new Foo value (random)");
+		    Console.WriteLine("5. Add new Bar value (random");
+			Console.WriteLine("6. Add a Bar with a Foo relation (add a new Foo and Bar");
+			
+
 		    Console.Write("\n(type exit to finish)\n=> ");
 	    }
 
@@ -42,43 +46,65 @@ namespace DapperSample
 				switch (optionNumber)
 				{
 					case 1:
-						GetAll();
+						GetAll<Foo>();
 						break;
 					case 2:
-						Save();
+						GetAll<Bar>();
+						break;
+					case 3:
+						GetFooWithRelations();
+						break;
+					case 4:
+						Save<Foo>();
+						break;
+					case 5:
+						Save<Bar>();
+						break;
+					case 6:
+						SaveFooWithRelation();
 						break;
 
 				}
 			}
 		}
 
-	    private static void GetAll()
+	    private static void GetAll<T>() where T:IModel, new()
 	    {
-		    var foos = _connection.GetAll();
+		    var values = _connection.GetAll<T>();
 
-			if(!foos.Any())
+			if(!values.Any())
 				Console.WriteLine("No values");
 
-		    foreach (var foo in foos)
+		    foreach (var value in values)
 		    {
-				Console.WriteLine($"[{foo.Id}]:: {foo.Name}");
+				Console.WriteLine($"[{value.Id}]:: {value.Name}");
 			}
 
 		    Console.WriteLine();   
 	    }
 
-		private static void Save()
+		private static void GetFooWithRelations()
 		{
-			var foo = new Foo
+			throw new NotImplementedException();
+		}
+
+		private static void Save<T>() where T: IModel, new()
+		{
+			var value = new T()
 			          {
 				          Id = Guid.NewGuid(),
 				          Name = DateTime.UtcNow.ToString("G")
 			          };
 
-			_connection.Save(foo);
+			_connection.Save(value);
 
-			Console.WriteLine($"Value saved: {foo.Id}");
+			Console.WriteLine($"Value saved: {value.Id}");
 			Console.WriteLine();
+		}
+
+		private static void SaveFooWithRelation()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
