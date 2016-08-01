@@ -25,9 +25,7 @@ namespace DapperSample
 			_connection.Execute("CREATE TABLE IF NOT EXISTS Bar(Id TEXT PRIMARY KEY NOT NULL, Name TEXT)");
 			_connection.Close();
 		}
-
-
-
+		
 		public IEnumerable<T> GetAll<T>() where T : IModel, new()
 		{
 			try
@@ -112,7 +110,6 @@ namespace DapperSample
 
 				var sql =$@"
 					INSERT INTO Bar(Id, Name) VALUES('{dto.BarId}', '{dto.BarName}');
-
 					INSERT INTO Foo(Id, Name, BarId) VALUES('{dto.FooId}', '{dto.FooName}', '{dto.BarId}')";
 
 				_connection.Execute(sql);
